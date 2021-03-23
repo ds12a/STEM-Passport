@@ -82,22 +82,7 @@ var vendors = [
     "image": "0.png"
   }
 ];
-function setCookie(cname, cvalue) {
-  exdays = 1;
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  var expires = "expires="+ d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-function getCookie(name){
-    var pattern = RegExp(name + "=.[^;]*")
-    var matched = document.cookie.match(pattern)
-    if(matched){
-        var cookie = matched[0].split('=')
-        return cookie[1]
-    }
-    return false
-}
+
 function getUserData(){
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -109,8 +94,8 @@ function getUserData(){
         if (doc.exists) {
             var data = doc.data();
             console.log(data);
-            setCookie('placesVisited', data.visited.join("|"));
-            setCookie('timestamps', data.timestamps.join("|"));
+            Cookies.set('placesVisited', 'data.visited.join("|")', { expires: 1, path: '' });
+            Cookies.set('timestamps', 'data.timestamps.join("|")', { expires: 1, path: '' });
         } else {
             // doc.data() will be undefined in this case
             alert("User Data not found!");
@@ -136,12 +121,11 @@ function makeCard(vendor, visited) {
 }
 function getCards() {
   var s = "";
-  var v = getCookie('placesVisited');
+  var v = Cookies.get('placesVisited');
   if(!v) {
     getUserData();
-    v = getCookie('placesVisited');
+    v = Cookies.get('placesVisited');
   }
-  alert("TEST");
   alert(v);
   var placesVisited = v.split("|");
   for (x of vendors) {
