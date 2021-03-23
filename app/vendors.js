@@ -72,43 +72,41 @@ var vendors = [
   }
 ];
 function setCookie(cname, cvalue) {
-  exdays = 0.05;
+  exdays = 1;
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
   var expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
+function getCookie( name ) {
+    var dc,
+        prefix,
+        begin,
+        end;
+    
+    dc = document.cookie;
+    prefix = name + "=";
+    begin = dc.indexOf("; " + prefix);
+    end = dc.length; // default to end of the string
+
+    // found, and not in first position
+    if (begin !== -1) {
+        // exclude the "; "
+        begin += 2;
+    } else {
+        //see if cookie is in first position
+        begin = dc.indexOf(prefix);
+        // not found at all or found as a portion of another cookie name
+        if (begin === -1 || begin !== 0 ) return null;
+    } 
+
+    // if we find a ";" somewhere after the prefix position then "end" is that position,
+    // otherwise it defaults to the end of the string
+    if (dc.indexOf(";", begin) !== -1) {
+        end = dc.indexOf(";", begin);
     }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-function makeCard(vendor, visited) {
-  var green = "success";
-  var gray = "muted";
-  var yes = "Visited!";
-  var no = "Not Visited Yet";
-  var card = "<div class='card'><img class='card-img-top' src='../images/vendors/"+vendor.image+"' alt='"+vendor.name+"'><div class='card-body'><h5 class='card-title'>"+vendor.name+"</h5><p class='card-text'>"+vendor.description+"</p><p class='text-"+(visited?green:gray)+"'>"+(visited?yes:no)+"</p></div><div class='card-footer'><div class='btn-group'><a href='https://www."+vendor.link+ "' target='_blank' class='btn btn-primary'>See more information</a><a class='btn btn-primary text-white'>"+(visited?"Unmark":"Mark") + " As Visited</a></div></div></div>";
-  return card;
-}
-function getCards() {
-  var s = "";
-  var v = getCookie('placesVisited');
-  var placesVisited = v.split("|");
-  for (x of vendors) {
-    s += makeCard(x, placesVisited.includes(x.id));
-  }
-  return s;
+
+    return decodeURI(dc.substring(begin + prefix.length, end) ).replace(/\"/g, ''); 
 }
 function getUserData(){
   firebase.auth().onAuthStateChanged(function(user) {
@@ -135,4 +133,25 @@ function getUserData(){
       console.log("Not signed in", error);
     }
   });
+}
+function makeCard(vendor, visited) {
+  var green = "success";
+  var gray = "muted";
+  var yes = "Visited!";
+  var no = "Not Visited Yet";
+  var card = "<div class='card'><img class='card-img-top' src='../images/vendors/"+vendor.image+"' alt='"+vendor.name+"'><div class='card-body'><h5 class='card-title'>"+vendor.name+"</h5><p class='card-text'>"+vendor.description+"</p><p class='text-"+(visited?green:gray)+"'>"+(visited?yes:no)+"</p></div><div class='card-footer'><div class='btn-group'><a href='https://www."+vendor.link+ "' target='_blank' class='btn btn-primary'>See more information</a><a class='btn btn-primary text-white'>"+(visited?"Unmark":"Mark") + " As Visited</a></div></div></div>";
+  return card;
+}
+function getCards() {
+  var s = "";
+  var v = getCookie('placesVisited');
+  if(v == null) {
+    getUserData();
+    var v = getCookie('placesVisited');
+  }
+  var placesVisited = v.split("|");
+  for (x of vendors) {
+    s += makeCard(x, placesVisited.includes(x.id));
+  }
+  return s;
 }
