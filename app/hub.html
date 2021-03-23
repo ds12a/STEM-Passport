@@ -16,6 +16,9 @@
 	<script src="../resources/bootstrap/js/bootstrap.min.js">
 
 	</script>
+	<script src="../resources/cookie.min.js">
+
+	</script>
 
 	<link href="../style.css" rel="stylesheet" type="text/css" />
 	<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js">
@@ -88,7 +91,6 @@
         document.getElementById("greeting").innerHTML = "Hi "+user.displayName.split(" ")[0];
       }
     });
-    getUserData();
     document.getElementById('content').outerHTML = getCards();
     
   </script>
