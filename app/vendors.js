@@ -139,6 +139,7 @@ function getCards() {
     getUserData();
     v = getCookie('placesVisited');
   }
+  alert("TEST");
   alert(v);
   var placesVisited = v.split("|");
   for (x of vendors) {
