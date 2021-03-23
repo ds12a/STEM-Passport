@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>STEM Passport - App - Hub</title>
+  <link rel="icon" type="image/png" href="../images/site/logo.png"/>
+	<link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.min.css">
+	<script src="../resources/jquery.min.js">
+
+	</script>
+	<script src="../resources/popper.min.js">
+
+	</script>
+	<script src="../resources/bootstrap/js/bootstrap.min.js">
+
+	</script>
+
+	<link href="../style.css" rel="stylesheet" type="text/css" />
+	<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js">
+
+	</script>
+	<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js">
+
+	</script>
+	<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js">
+
+	</script>
+	<script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js">
+
+	</script>
+	<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
+	<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js">
+
+	</script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+	<script src="./firebase_functions.js">
+
+	</script>
+	<script src="./vendors.js">
+
+	</script>
+
+</head>
+
+<header>
+	<div class="d-flex justify-content-center align-items-center">
+		<img class="p-2" height="70" width="150" src="../images/site/logo.png">
+    <h1 class="d-none d-sm-block p-2"> STEM Passport</h1>
+  </div>
+</header>
+<body>
+	<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top nav-pills">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon "></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="collapsibleNavbar">
+      <ul class="nav ">
+        <li class="nav-item">
+          <a class="nav-link text-primary" href="../index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-primary" href="../getting_started.html">Getting Started</a>
+        </li>  
+        <li class="nav-item">
+          <a role="button" class="nav-link text-white active" href="./launch.html"> Launch Passport</a>
+        </li>  
+      </ul>
+      <button type="button" class="btn btn-outline-success" onclick="logout()">Log Out</button>
+    </div>  
+  </nav>
+
+  <div class="jumbotron text-center text-white bg-success" style="margin-bottom:0">
+    <h1>Hub</h1>
+    <p id="greeting"></p>
+    <p>View and Visit STEM Locations here!</p>
+  </div>
+
+  <div class="card-columns">
+    <div id="content"></div>
+  </div>
+  <script type="text/javascript">
+    filter();
+    analytics.logEvent("Login Successful");
+    firebase.auth().onAuthStateChanged(function (user) {
+      if(user) {
+        document.getElementById("greeting").innerHTML = "Hi "+user.displayName.split(" ")[0];
+      }
+    });
+    getUserData();
+    document.getElementById('content').outerHTML = getCards();
+    
+  </script>
+
+</body>
+</html>
