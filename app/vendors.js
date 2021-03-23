@@ -113,9 +113,11 @@ function getUserData(){
             setCookie('timestamps', data.timestamps.join("|"));
         } else {
             // doc.data() will be undefined in this case
+            alert("User Data not found!");
             console.log("No such document!");
         }
       }).catch((error) => {
+          alert("An error occured.");
           console.log("Error getting document:", error);
       });
     } else {
