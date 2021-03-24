@@ -85,7 +85,7 @@ var vendors = [
 ];
 function toggle(id){alert(id);
     var c = Cookies.get('placesVisited').split('|');
-    var c2 = Cookies.get('timestamps').split('|');
+    var c2 = Cookies.get('timestamps').split('|'); alert("Cookies read");
     var db = firebase.firestore();
     var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
