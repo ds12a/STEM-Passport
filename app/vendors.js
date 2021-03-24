@@ -8,7 +8,7 @@ function handleError(evt) {
       alert("error: "+evt.type+" from element: "+(evt.srcElement || evt.target));
     }
 }
-alert("VERSION: 2");
+alert("VERSION: 3");
 // REMOVE BEFORE DEPLOY
 var vendors = [
   {
@@ -87,6 +87,7 @@ function toggle(id){
     var c = Cookies.get('placesVisited').split('|');
     var c2 = Cookies.get('timestamps').split('|');
     var db = firebase.firestore();
+    var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
     if(c.includes(id)){
         var l = c.indexOf(id);
