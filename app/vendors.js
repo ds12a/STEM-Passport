@@ -82,7 +82,24 @@ var vendors = [
     "image": "0.png"
   }
 ];
-
+function toggle(id){
+    var c = Cookies.get('placesVisited').split('|');
+    var c2 = Cookies.get('timestamps').split('|');
+    var docRef = db.collection("users").doc(user.uid.toString());
+    if(c.includes(id)){
+        var l = c.indexOf(id);
+        c.splice(l, l+1);
+        c2.splice(l,l+1);
+        docRef.update({visited: c,timestamps: c2});
+    } else {
+        c.push(id);
+        c2.push(firebase.firestore.FieldValue.serverTimestamp());
+        
+        docRef.update({visited: c,timestamps: c2});
+    }
+    Cookies.set('placesVisited', c.join("|"), {path: '' });
+    Cookies.set('timestamps', c2.join("|"), {path: '' });
+}
 function getUserData(){
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -94,15 +111,15 @@ function getUserData(){
         if (doc.exists) {
             var data = doc.data();
             console.log(data);
-            Cookies.set('placesVisited', data.visited.join("|"), { expires: 1, path: '' });
-            Cookies.set('timestamps', data.timestamps.join("|"), { expires: 1, path: '' });
+            Cookies.set('placesVisited', data.visited.join("|"), {path: '' });
+            Cookies.set('timestamps', data.timestamps.join("|"), {path: '' });
         } else {
             // doc.data() will be undefined in this case
             alert("User Data not found!");
             console.log("No such document!");
-            db.collection("users").doc(user.uid.toString()).set({visited:[1], timestamps:[firebase.firestore.Timestamp.fromDate(new Date())]});
-            Cookies.set('placesVisited', [1].join("|"), { expires: 1, path: '' });
-            Cookies.set('timestamps', [firebase.firestore.Timestamp.fromDate(new Date())].join("|"), { expires: 1, path: '' });
+            db.collection("users").doc(user.uid.toString()).set({visited:[1], timestamps:[firebase.firestore.FieldValue.serverTimestamp()]});
+            Cookies.set('placesVisited', [1].join("|"), {path: '' });
+            Cookies.set('timestamps', [firebase.firestore.FieldValue.serverTimestamp()].join("|"), { path: '' });
             alert("User Data Generated");
         }
       }).catch((error) => {
