@@ -8,7 +8,7 @@ function handleError(evt) {
       alert("error: "+evt.type+" from element: "+(evt.srcElement || evt.target));
     }
 }
-alert("VERSION: 3");
+alert("VERSION: 4");
 // REMOVE BEFORE DEPLOY
 var vendors = [
   {
