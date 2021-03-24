@@ -83,7 +83,7 @@ var vendors = [
     "image": "0.png"
   }
 ];
-function toggle(id){
+function toggle(id){alert(id);
     var c = Cookies.get('placesVisited').split('|');
     var c2 = Cookies.get('timestamps').split('|');
     var db = firebase.firestore();
