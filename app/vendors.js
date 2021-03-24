@@ -86,6 +86,7 @@ var vendors = [
 function toggle(id){
     var c = Cookies.get('placesVisited').split('|');
     var c2 = Cookies.get('timestamps').split('|');
+    var db = firebase.firestore();
     var docRef = db.collection("users").doc(user.uid.toString());
     if(c.includes(id)){
         var l = c.indexOf(id);
