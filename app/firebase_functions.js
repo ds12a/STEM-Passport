@@ -32,6 +32,8 @@ function filter() {
       }*/
     }
     else {
+      Cookies.remove('placesVisited', { path: '' });
+      Cookies.remove('timestamps', { path: '' });
       alert("You have been logged out! You will be redirected to the home page.")
       window.location.href = '../index.html';
     }
