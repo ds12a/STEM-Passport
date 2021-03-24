@@ -94,12 +94,16 @@ function getUserData(){
         if (doc.exists) {
             var data = doc.data();
             console.log(data);
-            Cookies.set('placesVisited', 'data.visited.join("|")', { expires: 1, path: '' });
-            Cookies.set('timestamps', 'data.timestamps.join("|")', { expires: 1, path: '' });
+            Cookies.set('placesVisited', data.visited.join("|"), { expires: 1, path: '' });
+            Cookies.set('timestamps', data.timestamps.join("|"), { expires: 1, path: '' });
         } else {
             // doc.data() will be undefined in this case
             alert("User Data not found!");
             console.log("No such document!");
+            db.collection("users").doc(user.uid.toString()).set({visited:[1], timestamps:[firebase.firestore.Timestamp.fromDate(new Date())]});
+            Cookies.set('placesVisited', [1].join("|"), { expires: 1, path: '' });
+            Cookies.set('timestamps', [firebase.firestore.Timestamp.fromDate(new Date())].join("|"), { expires: 1, path: '' });
+            alert("User Data Generated");
         }
       }).catch((error) => {
           alert("An error occured.");
