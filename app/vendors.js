@@ -127,11 +127,13 @@ function getCards() {
   var s = "";
   var v = Cookies.get('placesVisited');
   if(!v) {
+    alert("Getting user data from database");
     getUserData();
     v = Cookies.get('placesVisited');
   }
   alert(v);
   var placesVisited = v.split("|");
+  alert(placesVisited);
   for (x of vendors) {
     s += makeCard(x, placesVisited.includes(x.id));
   }
