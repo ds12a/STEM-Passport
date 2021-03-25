@@ -111,7 +111,7 @@ function toggle(id){alert(id);
     Cookies.set('placesVisited', c.join("|"), {path: '' });
     Cookies.set('timestamps', c2.join("|"), {path: '' });
                     alert("Cookies updated");
-    document.getElementById('content').outerHTML = getCards();
+    location.reload();
 }
 function getUserData(){
   firebase.auth().onAuthStateChanged(function(user) {
