@@ -161,7 +161,7 @@ function getCards() {
     v = Cookies.get('placesVisited');
   }
   alert(v);
-  var placesVisited = v.split("|");
+  var placesVisited = v.split("|").map(Number);
   alert(placesVisited);
   for (x of vendors) {
     s += makeCard(x, placesVisited.includes(x.id));
