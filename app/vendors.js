@@ -102,6 +102,7 @@ function toggle(id){alert(id);
         alert(time);
         docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id),timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
     }
+    alert("Finished doc updates");
     Cookies.set('placesVisited', c.join("|"), {path: '' });
     Cookies.set('timestamps', c2.join("|"), {path: '' });
                     alert("Cookies updated");
