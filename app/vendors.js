@@ -94,13 +94,15 @@ function toggle(id){alert(id);
         var l = c.indexOf(id);
         c.splice(l, l+1);
         c2.splice(l,l+1);
-        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id),timestamps: c2});
+        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id)});
+        docRef.update({timestamps: c2});
     } else {alert('Mark as visited');
         c.push(id);
         var time = firebase.firestore.FieldValue.serverTimestamp();
         c2.push(time);
         alert(time);
-        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id),timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
+        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id)});
+        docRef.update({timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
     }
     alert("Finished doc updates");
     Cookies.set('placesVisited', c.join("|"), {path: '' });
