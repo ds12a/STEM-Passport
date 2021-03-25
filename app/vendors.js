@@ -89,6 +89,7 @@ function toggle(id){alert(id);
     var db = firebase.firestore();
     var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
+    alert(c);
     if(c.includes(id)){alert("Mark as unvisited");
         var l = c.indexOf(id);
         c.splice(l, l+1);
@@ -98,7 +99,7 @@ function toggle(id){alert(id);
         c.push(id);
         var time = firebase.firestore.FieldValue.serverTimestamp();
         c2.push(time);
-        
+        alert(time);
         docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id),timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
     }
     Cookies.set('placesVisited', c.join("|"), {path: '' });
