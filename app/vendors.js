@@ -83,6 +83,9 @@ var vendors = [
     "image": "0.png"
   }
 ];
+function getTime(){
+    return firebase.firestore.Timestamp.fromDate(new Date());
+}
 function toggle(id){alert(id);
     var c = Cookies.get('placesVisited').split('|');
     var c2 = Cookies.get('timestamps').split('|'); alert("Cookies read");
@@ -97,7 +100,7 @@ function toggle(id){alert(id);
         docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2});
     } else {alert('Mark as visited');
         c.push(id);
-        var time = firebase.firestore.FieldValue.serverTimestamp();
+        var time = getTime();
         c2.push(time);
         alert(time);
         docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
@@ -124,9 +127,9 @@ function getUserData(){
             // doc.data() will be undefined in this case
             alert("User Data not found!");
             console.log("No such document!");
-            db.collection("users").doc(user.uid.toString()).set({visited:[1], timestamps:[firebase.firestore.FieldValue.serverTimestamp()]});
+            db.collection("users").doc(user.uid.toString()).set({visited:[1], timestamps:[getTime()]});
             Cookies.set('placesVisited', [1].join("|"), {path: '' });
-            Cookies.set('timestamps', [firebase.firestore.FieldValue.serverTimestamp()].join("|"), { path: '' });
+            Cookies.set('timestamps', [getTime()].join("|"), { path: '' });
             alert("User Data Generated");
         }
       }).catch((error) => {
