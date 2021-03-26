@@ -8,7 +8,7 @@ function handleError(evt) {
       alert("error: "+evt.type+" from element: "+(evt.srcElement || evt.target));
     }
 }
-alert("VERSION: 6");
+alert("VERSION: 7");
 // REMOVE BEFORE DEPLOY
 var vendors = [
   {
@@ -91,7 +91,7 @@ function toggle(id){alert(id);
     var c2 = Cookies.get('timestamps').split('|'); alert("Cookies read");
     var db = firebase.firestore();
     var user = firebase.auth().currentUser;
-   // var docRef = db.collection("users").doc(user.uid.toString());
+    var docRef = db.collection("users").doc(user.uid.toString());
     alert(c);
     alert(typeof(c));
                     alert(typeof(id));
@@ -99,14 +99,20 @@ function toggle(id){alert(id);
         var l = c.indexOf(id);
         c.splice(l, l+1);
         c2.splice(l,l+1);
-        db.collection("users").doc(user.uid.toString()).update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2});
+        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2}).catch((error) => {
+    // The document probably doesn't exist.
+    console.error("Error updating document: ", error);
+});
     } else {alert('Mark as visited');
         c.push(id);
         var time = getTime();
         c2.push(time);
         alert(time);
-        db.collection("users").doc(user.uid.toString()).update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(() => {
+        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(() => {
     console.log("Document successfully updated!"); alert("UPDATED");
+}).catch((error) => {
+    // The document probably doesn't exist.
+    console.error("Error updating document: ", error);
 });
     }
     alert("Finished doc updates");
