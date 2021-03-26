@@ -8,7 +8,7 @@ function handleError(evt) {
       alert("error: "+evt.type+" from element: "+(evt.srcElement || evt.target));
     }
 }
-alert("VERSION: 4");
+alert("VERSION: 5");
 // REMOVE BEFORE DEPLOY
 var vendors = [
   {
@@ -106,7 +106,7 @@ function toggle(id){alert(id);
         c2.push(time);
         alert(time);
         db.collection("users").doc(user.uid.toString()).update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(() => {
-    console.log("Document successfully updated!");
+    console.log("Document successfully updated!"); alert("UPDATED");
 });
     }
     alert("Finished doc updates");
@@ -163,6 +163,7 @@ function getCards() {
     alert("Getting user data from database");
     getUserData();
     v = Cookies.get('placesVisited');
+    location.reload();
   }
   alert(v);
   var placesVisited = v.split("|").map(Number);
