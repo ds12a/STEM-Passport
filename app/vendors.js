@@ -136,6 +136,7 @@ function getUserData(){
             Cookies.set('placesVisited', [1].join("|"), {path: '' });
             Cookies.set('timestamps', [getTime()].join("|"), { path: '' });
             alert("User Data Generated");
+            location.reload();
         }
       }).catch((error) => {
           alert("An error occured.");
