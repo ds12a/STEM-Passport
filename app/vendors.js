@@ -8,7 +8,7 @@ function handleError(evt) {
       alert("error: "+evt.type+" from element: "+(evt.srcElement || evt.target));
     }
 }
-alert("VERSION: 5");
+alert("VERSION: 6");
 // REMOVE BEFORE DEPLOY
 var vendors = [
   {
@@ -163,7 +163,6 @@ function getCards() {
     alert("Getting user data from database");
     getUserData();
     v = Cookies.get('placesVisited');
-    location.reload();
   }
   alert(v);
   var placesVisited = v.split("|").map(Number);
