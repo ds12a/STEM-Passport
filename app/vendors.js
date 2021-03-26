@@ -105,7 +105,9 @@ function toggle(id){alert(id);
         var time = getTime();
         c2.push(time);
         alert(time);
-        db.collection("users").doc(user.uid.toString()).update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
+        db.collection("users").doc(user.uid.toString()).update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(() => {
+    console.log("Document successfully updated!");
+});
     }
     alert("Finished doc updates");
     Cookies.set('placesVisited', c.join("|"), {path: '' });
