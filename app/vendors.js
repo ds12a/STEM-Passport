@@ -99,7 +99,7 @@ function toggle(id){alert(id);
         var l = c.indexOf(id);
         c.splice(l, l+1);
         c2.splice(l,l+1);
-        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2}).then(() => {
+        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: firebase.firestore.FieldValue.arrayRemove(c2[l])}).then(() => {
             console.log("Document successfully updated!");
             location.reload(false);
         });
