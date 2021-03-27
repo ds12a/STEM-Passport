@@ -108,7 +108,7 @@ function toggle(id){alert(id);
     } else {alert('Mark as visited');
         c.push(id);
         var time = getTime();
-        c2.push(time.toDate().toString());
+        c2.push(time);
         alert(time);
         docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(() => {
             console.log("Document successfully updated!");
