@@ -99,48 +99,20 @@ function toggle(id){alert(id);
         var l = c.indexOf(id);
         c.splice(l, l+1);
         c2.splice(l,l+1);
-        docRef.get().then((doc) => {
-            if (doc.exists) {alert("UPDATING");
-                docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2}).then(function() {
-                // update successful here
-                alert("Sucess!");
-            }).catch(function(error) {
-                 console.log(error);
-            });
-            } else {
-                alert("Doc not found");
-            }}).catch((error) => {
-              alert("An error occured.");
-              console.log("Error getting document:", error);
-          });
+        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2});
         
     } else {alert('Mark as visited');
         c.push(id);
         var time = getTime();
         c2.push(time);
         alert(time);
-        docRef.get().then((doc) => {
-            if (doc.exists) { alert("UPDATING");
-                docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(function() {
-                // update successful here
-                alert("Sucess!");
-            }).catch(function(error) {
-                 console.log(error);
-            });
-            } else {
-                alert("Doc not found");
-            }
-          }).catch((error) => {
-              alert("An error occured.");
-              console.log("Error getting document:", error);
-          });
+        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
 
     }
     alert("Finished doc updates");
     Cookies.set('placesVisited', c.join("|"), {path: '' });
     Cookies.set('timestamps', c2.join("|"), {path: '' });
                     alert("Cookies updated");
-    location.reload();
 }
 function getUserData(){
   firebase.auth().onAuthStateChanged(function(user) {
