@@ -101,7 +101,12 @@ function toggle(id){alert(id);
         c2.splice(l,l+1);
         docRef.get().then((doc) => {
             if (doc.exists) {
-                docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2});
+                docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2}).then(function() {
+                // update successful here
+                alert("Sucess!");
+            }).catch(function(error) {
+                 console.log(error);
+            });
             } else {
                 alert("Doc not found");
             }}).catch((error) => {
@@ -116,7 +121,12 @@ function toggle(id){alert(id);
         alert(time);
         docRef.get().then((doc) => {
             if (doc.exists) {
-                docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
+                docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(function() {
+                // update successful here
+                alert("Sucess!");
+            }).catch(function(error) {
+                 console.log(error);
+            });
             } else {
                 alert("Doc not found");
             }
