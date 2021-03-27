@@ -8,7 +8,7 @@ function handleError(evt) {
       alert("error: "+evt.type+" from element: "+(evt.srcElement || evt.target));
     }
 }
-alert("VERSION: 9");
+alert("VERSION: 10");
 // REMOVE BEFORE DEPLOY
 var vendors = [
   {
@@ -104,16 +104,10 @@ function toggle(id){alert(id);
                 docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2});
             } else {
                 alert("Doc not found");
-            }
-          }).catch((error) => {
+            }}).catch((error) => {
               alert("An error occured.");
               console.log("Error getting document:", error);
           });
-        } else {
-          // No user is signed in.
-          console.log("Not signed in", error);
-        }
-      });
         
     } else {alert('Mark as visited');
         c.push(id);
@@ -130,12 +124,7 @@ function toggle(id){alert(id);
               alert("An error occured.");
               console.log("Error getting document:", error);
           });
-        } else {
-          // No user is signed in.
-          console.log("Not signed in", error);
-        }
-      });
-        
+
     }
     alert("Finished doc updates");
     Cookies.set('placesVisited', c.join("|"), {path: '' });
