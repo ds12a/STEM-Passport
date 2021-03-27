@@ -100,7 +100,7 @@ function toggle(id){alert(id);
         c.splice(l, l+1);
         c2.splice(l,l+1);
         docRef.get().then((doc) => {
-            if (doc.exists) {
+            if (doc.exists) {alert("UPDATING");
                 docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2}).then(function() {
                 // update successful here
                 alert("Sucess!");
@@ -120,7 +120,7 @@ function toggle(id){alert(id);
         c2.push(time);
         alert(time);
         docRef.get().then((doc) => {
-            if (doc.exists) {
+            if (doc.exists) { alert("UPDATING");
                 docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(function() {
                 // update successful here
                 alert("Sucess!");
