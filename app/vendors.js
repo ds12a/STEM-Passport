@@ -97,13 +97,14 @@ function toggle(id){alert(id);
                     alert(typeof(id));
     if(c.includes(id)){alert("Mark as unvisited");
         var l = c.indexOf(id) - 1;
-        c.splice(l, l+1);
-        c2.splice(l,l+1);
+        
         docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: firebase.firestore.FieldValue.arrayRemove(c2[l])}).then(() => {
             console.log("Document successfully updated!");
             location.reload(false);
         });
-        
+                       
+        c.splice(l, l+1);
+        c2.splice(l,l+1);
     } else {alert('Mark as visited');
         c.push(id);
         var time = getTime();
