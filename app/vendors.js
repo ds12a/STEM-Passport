@@ -131,9 +131,14 @@ function getUserData(){
       docRef.get().then((doc) => {
         if (doc.exists) {
             var data = doc.data();
+            var ts = data.timestamps;
+            var tss = [];
+            ts.forEach(a => {
+                tss.push(a.toMillis());
+            });
             console.log(data);
             Cookies.set('placesVisited', data.visited.join("|"), {path: '' });
-            Cookies.set('timestamps', data.timestamps.join("|"), {path: '' });
+            Cookies.set('timestamps', tss.join("|"), {path: '' });
         } else {
             // doc.data() will be undefined in this case
             alert("User Data not found!");
