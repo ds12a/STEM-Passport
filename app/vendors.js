@@ -99,14 +99,20 @@ function toggle(id){alert(id);
         var l = c.indexOf(id);
         c.splice(l, l+1);
         c2.splice(l,l+1);
-        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2});
+        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2}).then(() => {
+            console.log("Document successfully updated!");
+            location.reload(false);
+        });
         
     } else {alert('Mark as visited');
         c.push(id);
         var time = getTime();
         c2.push(time);
         alert(time);
-        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
+        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(() => {
+            console.log("Document successfully updated!");
+            location.reload(false);
+        });
 
     }
     alert("Finished doc updates");
