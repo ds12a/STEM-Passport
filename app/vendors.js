@@ -8,7 +8,7 @@ function handleError(evt) {
       alert("error: "+evt.type+" from element: "+(evt.srcElement || evt.target));
     }
 }
-alert("VERSION: 8");
+alert("VERSION: 9");
 // REMOVE BEFORE DEPLOY
 var vendors = [
   {
@@ -99,22 +99,43 @@ function toggle(id){alert(id);
         var l = c.indexOf(id);
         c.splice(l, l+1);
         c2.splice(l,l+1);
-        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2}).catch((error) => {
-    // The document probably doesn't exist.
-    console.error("Error updating document: ", error);
-});
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: c2});
+            } else {
+                alert("Doc not found");
+            }
+          }).catch((error) => {
+              alert("An error occured.");
+              console.log("Error getting document:", error);
+          });
+        } else {
+          // No user is signed in.
+          console.log("Not signed in", error);
+        }
+      });
+        
     } else {alert('Mark as visited');
         c.push(id);
         var time = getTime();
         c2.push(time);
         alert(time);
-        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(() => {
-    console.log("Document successfully updated!"); alert("UPDATED");
-}).catch((error) => {
-    // The document probably doesn't exist.
-            alert("FAIL" + error);
-    console.error("Error updating document: ", error);
-});
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)});
+            } else {
+                alert("Doc not found");
+            }
+          }).catch((error) => {
+              alert("An error occured.");
+              console.log("Error getting document:", error);
+          });
+        } else {
+          // No user is signed in.
+          console.log("Not signed in", error);
+        }
+      });
+        
     }
     alert("Finished doc updates");
     Cookies.set('placesVisited', c.join("|"), {path: '' });
@@ -139,7 +160,7 @@ function getUserData(){
             // doc.data() will be undefined in this case
             alert("User Data not found!");
             console.log("No such document!");
-            db.collection("users").doc(user.uid.toString()).set({visited:[1], timestamps:[getTime()]});
+            docRef.set({visited:[1], timestamps:[getTime()]});
             Cookies.set('placesVisited', [1].join("|"), {path: '' });
             Cookies.set('timestamps', [getTime()].join("|"), { path: '' });
             alert("User Data Generated");
