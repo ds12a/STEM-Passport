@@ -84,7 +84,7 @@ var vendors = [
   }
 ];
 function getTime(){
-    return firebase.firestore.Timestamp.fromDate(new Date());
+    return firebase.firestore.Timestamp.fromDate(new Date()).toMillis().toString();
 }
 function toggle(id){alert(id);
     var c = Cookies.get('placesVisited').split('|').map(Number);
@@ -98,7 +98,7 @@ function toggle(id){alert(id);
     if(c.includes(id)){alert("Mark as unvisited");
         var l = c.indexOf(id) - 1;
         
-        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: firebase.firestore.FieldValue.arrayRemove(c2[l])}).then(() => {
+        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: firebase.firestore.FieldValue.arrayRemove(firebase.firestore.Timestamp.fromMillis(parseInt(c2[l])))}).then(() => {
             console.log("Document successfully updated!");
             location.reload(false);
         });
@@ -108,7 +108,7 @@ function toggle(id){alert(id);
     } else {alert('Mark as visited');
         c.push(id);
         var time = getTime();
-        c2.push(time);
+        c2.push(time.toDate().toString());
         alert(time);
         docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(() => {
             console.log("Document successfully updated!");
@@ -138,9 +138,9 @@ function getUserData(){
             // doc.data() will be undefined in this case
             alert("User Data not found!");
             console.log("No such document!");
-            docRef.set({visited:[1], timestamps:[getTime()]});
-            Cookies.set('placesVisited', [1].join("|"), {path: '' });
-            Cookies.set('timestamps', [getTime()].join("|"), { path: '' });
+            docRef.set({visited:[], timestamps:[]});
+            Cookies.set('placesVisited', [].join("|"), {path: '' });
+            Cookies.set('timestamps', [].join("|"), { path: '' });
             alert("User Data Generated");
             location.reload();
         }
