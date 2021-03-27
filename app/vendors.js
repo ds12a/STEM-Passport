@@ -8,7 +8,7 @@ function handleError(evt) {
       alert("error: "+evt.type+" from element: "+(evt.srcElement || evt.target));
     }
 }
-alert("VERSION: 7");
+alert("VERSION: 8");
 // REMOVE BEFORE DEPLOY
 var vendors = [
   {
@@ -112,6 +112,7 @@ function toggle(id){alert(id);
     console.log("Document successfully updated!"); alert("UPDATED");
 }).catch((error) => {
     // The document probably doesn't exist.
+            alert("FAIL" + error);
     console.error("Error updating document: ", error);
 });
     }
