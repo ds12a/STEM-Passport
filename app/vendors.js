@@ -110,7 +110,7 @@ function toggle(id){alert(id);
         var time = getTime();
         c2.push(time);
         alert(time);
-        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(time)}).then(() => {
+        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(firebase.firestore.Timestamp.fromMillis(time))}).then(() => {
             console.log("Document successfully updated!");
             location.reload(false);
         });
