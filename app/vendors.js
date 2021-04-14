@@ -8,7 +8,6 @@ function handleError(evt) {
       alert("error: "+evt.type+" from element: "+(evt.srcElement || evt.target));
     }
 }
-alert("VERSION: 10");
 // REMOVE BEFORE DEPLOY
 var vendors = [
   {
@@ -92,9 +91,7 @@ function toggle(id){alert(id);
     var db = firebase.firestore();
     var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
-    alert(c);
-    alert(typeof(c));
-                    alert(typeof(id));
+
     if(c.includes(id)){alert("Mark as unvisited");
         var l = c.indexOf(id) - 1;
         
@@ -121,7 +118,7 @@ function toggle(id){alert(id);
     Cookies.set('timestamps', c2.join("|"), {path: '' });
                     alert("Cookies updated");
 }
-function getUserData(){
+async function getUserData(){
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       // User is signed in.
@@ -167,12 +164,12 @@ function makeCard(vendor, visited) {
   var card = "<div class='card'><img class='card-img-top' src='../images/vendors/"+vendor.image+"' alt='"+vendor.name+"'><div class='card-body'><h5 class='card-title'>"+vendor.name+"</h5><p class='card-text'>"+vendor.description+"</p><p class='text-"+(visited?green:gray)+"'>"+(visited?yes:no)+"</p></div><div class='card-footer'><div class='btn-group'><a href='https://www."+vendor.link+ "' target='_blank' class='btn btn-primary'>See more information</a><button onclick='toggle("+vendor.id+")' class='btn btn-primary text-white'>"+(visited?"Unmark":"Mark") + " As Visited</button></div></div></div>";
   return card;
 }
-function getCards() {
+async function getCards() {
   var s = "";
   var v = Cookies.get('placesVisited');
   if(!v) {
     alert("Getting user data from database");
-    getUserData();
+    await getUserData();
     v = Cookies.get('placesVisited');
   }
   alert(v);
