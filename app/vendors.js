@@ -83,40 +83,32 @@ var vendors = [
   }
 ];
 function getTime(){
-    return firebase.firestore.Timestamp.fromDate(new Date()).toMillis().toString();
+    var d = new Date();
+    var n = d.toLocaleDateString();
+    return n;
 }
-function toggle(id){alert(id);
+function toggle(id, something){alert(id);
     var c = Cookies.get('placesVisited').split('|').map(Number);
-    var c2 = Cookies.get('timestamps').split('|'); alert("Cookies read");
     var db = firebase.firestore();
     var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
-
-    if(c.includes(id)){alert("Mark as unvisited");
+    
+    if(something != null){alert("Mark as unvisited");
         var l = c.indexOf(id) - 1;
-        
-        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id), timestamps: firebase.firestore.FieldValue.arrayRemove(firebase.firestore.Timestamp.fromMillis(parseInt(c2[l])))}).then(() => {
-            console.log("Document successfully updated!");
-            location.reload(false);
-        });
-                       
         c.splice(l, l+1);
-        c2.splice(l,l+1);
-    } else {alert('Mark as visited');
-        c.push(id);
-        var time = getTime();
-        c2.push(time);
-        alert(time);
-        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id), timestamps: firebase.firestore.FieldValue.arrayUnion(firebase.firestore.Timestamp.fromMillis(time))}).then(() => {
+        docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(id)}).then(() => {
+            Cookies.set('placesVisited', c.join("|"), {path: '' });
             console.log("Document successfully updated!");
             location.reload(false);
         });
-
-    }
-    alert("Finished doc updates");
-    Cookies.set('placesVisited', c.join("|"), {path: '' });
-    Cookies.set('timestamps', c2.join("|"), {path: '' });
-                    alert("Cookies updated");
+    } else {alert('Mark as visited');
+        c.push(id.toString()+"@"+getTime());
+        docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(id)}).then(() => {
+            Cookies.set('placesVisited', c.join("|"), {path: '' });
+            console.log("Document successfully updated!");
+            location.reload(false);
+        });
+    }    
 }
 async function getUserData(){
   firebase.auth().onAuthStateChanged(function(user) {
@@ -128,21 +120,14 @@ async function getUserData(){
       docRef.get().then((doc) => {
         if (doc.exists) {
             var data = doc.data();
-            var ts = data.timestamps;
-            var tss = [];
-            ts.forEach(a => {
-                tss.push(a.toMillis());
-            });
             console.log(data);
             Cookies.set('placesVisited', data.visited.join("|"), {path: '' });
-            Cookies.set('timestamps', tss.join("|"), {path: '' });
         } else {
             // doc.data() will be undefined in this case
             alert("User Data not found!");
             console.log("No such document!");
-            docRef.set({visited:[], timestamps:[]});
+            docRef.set({visited:[]});
             Cookies.set('placesVisited', [].join("|"), {path: '' });
-            Cookies.set('timestamps', [].join("|"), { path: '' });
             alert("User Data Generated");
             location.reload();
         }
@@ -156,12 +141,12 @@ async function getUserData(){
     }
   });
 }
-function makeCard(vendor, visited) {
+function makeCard(vendor, visited, something) {
   var green = "success";
   var gray = "muted";
   var yes = "Visited!";
   var no = "Not Visited Yet";
-  var card = "<div class='card'><img class='card-img-top' src='../images/vendors/"+vendor.image+"' alt='"+vendor.name+"'><div class='card-body'><h5 class='card-title'>"+vendor.name+"</h5><p class='card-text'>"+vendor.description+"</p><p class='text-"+(visited?green:gray)+"'>"+(visited?yes:no)+"</p></div><div class='card-footer'><div class='btn-group'><a href='https://www."+vendor.link+ "' target='_blank' class='btn btn-primary'>See more information</a><button onclick='toggle("+vendor.id+")' class='btn btn-primary text-white'>"+(visited?"Unmark":"Mark") + " As Visited</button></div></div></div>";
+  var card = "<div class='card'><img class='card-img-top' src='../images/vendors/"+vendor.image+"' alt='"+vendor.name+"'><div class='card-body'><h5 class='card-title'>"+vendor.name+"</h5><p class='card-text'>"+vendor.description+"</p><p class='text-"+(visited?green:gray)+"'>"+(visited?yes:no)+"</p></div><div class='card-footer'><div class='btn-group'><a href='https://www."+vendor.link+ "' target='_blank' class='btn btn-primary'>See more information</a><button onclick='toggle("+vendor.id+","+something+")' class='btn btn-primary text-white'>"+(visited?"Unmark":"Mark") + " As Visited</button></div></div></div>";
   return card;
 }
 function getCards() {
@@ -176,7 +161,8 @@ function getCards() {
   var placesVisited = v.split("|").map(Number);
   alert(placesVisited);
   for (x of vendors) {
-    s += makeCard(x, placesVisited.includes(x.id));
+    y = placesVisited.filter(item => item.indexOf(x.id.toString()+"@") > -1);
+    s += makeCard(x, y.length>0, y);
   }
   return s;
 }
