@@ -130,7 +130,7 @@ async function getUserData(){
             docRef.set({visited:[]});
             Cookies.set('placesVisited', [].join("|"), {path: '' });
             alert("User Data Generated");
-            location.reload();
+            
         }
       }).catch((error) => {
           alert("An error occured.");
@@ -140,7 +140,10 @@ async function getUserData(){
       // No user is signed in.
       console.log("Not signed in", error);
     }
-  });
+  }).then(function() {
+    location.reload();
+});
+  
 }
 function makeCard(vendor, visited, something) {
   var green = "success";
