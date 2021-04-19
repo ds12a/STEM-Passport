@@ -165,7 +165,7 @@ async function getCards() {
   var placesVisited = v.split("|").map(Number);
   alert(placesVisited);
   for (x of vendors) {
-    y = placesVisited.filter(item => !item.includes(x.id.toString()+"@"));
+    y = placesVisited.filter(item => !item.indexOf(x.id.toString()+"@")>-1);
     s += makeCard(x, y.length>0, y);
   }
   return s;
