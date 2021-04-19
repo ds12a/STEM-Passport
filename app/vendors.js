@@ -152,6 +152,7 @@ function makeCard(vendor, visited, something) {
   var card = "<div class='card'><img class='card-img-top' src='../images/vendors/"+vendor.image+"' alt='"+vendor.name+"'><div class='card-body'><h5 class='card-title'>"+vendor.name+"</h5><p class='card-text'>"+vendor.description+"</p><p class='text-"+(visited?green:gray)+"'>"+(visited?yes:no)+"</p></div><div class='card-footer'><div class='btn-group'><a href='https://www."+vendor.link+ "' target='_blank' class='btn btn-primary'>See more information</a><button onclick='toggle("+vendor.id+","+something+")' class='btn btn-primary text-white'>"+(visited?"Unmark":"Mark") + " As Visited</button></div></div></div>";
   return card;
 }
+
 async function getCards() {
   var s = "";
   var v = Cookies.get('placesVisited');
@@ -164,7 +165,7 @@ async function getCards() {
   var placesVisited = v.split("|").map(Number);
   alert(placesVisited);
   for (x of vendors) {
-    y = placesVisited.filter(item => item.indexOf(x.id.toString()+"@") > -1);
+    y = placesVisited.filter(item => !item.includes(x.id.toString()+"@"));
     s += makeCard(x, y.length>0, y);
   }
   return s;
