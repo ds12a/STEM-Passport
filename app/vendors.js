@@ -93,7 +93,7 @@ function toggle(id, something){alert(id);
     var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
     
-    if(!(something==="")){alert("Mark as unvisited");
+    if(!(something===undefined)){alert("Mark as unvisited");
         var l = c.indexOf(something) - 1;
         c.splice(l, l+1);
         docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(something)}).then(() => {
@@ -127,8 +127,8 @@ async function getUserData(){
             // doc.data() will be undefined in this case
             alert("User Data not found!");
             console.log("No such document!");
-            docRef.set({visited:[]});
-            Cookies.set('placesVisited', [].join("|"), {path: '' });
+            docRef.set({visited:[0]});
+            Cookies.set('placesVisited', "|", {path: '' });
             alert("User Data Generated");
             
         }
@@ -145,13 +145,12 @@ async function getUserData(){
 });
   
 }
-function makeCard(vendor, visited, something) {
+function makeCard(vendor, something) {
   var green = "success";
   var gray = "muted";
   var yes = "Visited!";
   var no = "Not Visited Yet";
-  if(!visited) something = "";
-  else something = something[0];
+  var visited = something===undefined;
   var card = "<div class='card'><img class='card-img-top' src='../images/vendors/"+vendor.image+"' alt='"+vendor.name+"'><div class='card-body'><h5 class='card-title'>"+vendor.name+"</h5><p class='card-text'>"+vendor.description+"</p><p class='text-"+(visited?green:gray)+"'>"+(visited?yes:no)+"</p></div><div class='card-footer'><div class='btn-group'><a href='https://www."+vendor.link+ "' target='_blank' class='btn btn-primary'>See more information</a><button onclick='toggle("+vendor.id+","+something+")' class='btn btn-primary text-white'>"+(visited?"Unmark":"Mark") + " As Visited</button></div></div></div>";
   return card;
 }
@@ -165,11 +164,11 @@ async function getCards() {
     v = Cookies.get('placesVisited');
   }
   alert(v);
-  var placesVisited = v.split("|").map(Number);
+  var placesVisited = v.split("|");
   alert(placesVisited);
   for (x of vendors) {
-    y = placesVisited.filter(item => !item.indexOf(x.id.toString()+"@")>-1);
-    s += makeCard(x, y.length>0, y);
+    y = placesVisited.find(a =>a.includes(x.id.toString()+"@"));
+    s += makeCard(x, y);
   }
   return s;
 }
