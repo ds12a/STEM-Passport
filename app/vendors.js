@@ -169,6 +169,7 @@ async function getCards() {
   for (x of vendors) {
     y = placesVisited.find(a =>a.includes(x.id.toString()+"@"));
     s += makeCard(x, y);
+    alert(x); alert(s);
   }
   return s;
 }
