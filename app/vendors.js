@@ -93,7 +93,7 @@ function toggle(id, something, visited){alert(id);
     var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
     
-    if(visited)){alert("Mark as unvisited");
+    if(visited){alert("Mark as unvisited");
         var l = c.indexOf(something) - 1;
         c.splice(l, l+1);
         docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(something)}).then(() => {
