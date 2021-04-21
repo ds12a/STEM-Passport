@@ -87,13 +87,13 @@ function getTime(){
     var n = d.toLocaleDateString();
     return n;
 }
-function toggle(id, something){alert(id);
+function toggle(id, something, visited){alert(id);
     var c = Cookies.get('placesVisited').split('|');
     var db = firebase.firestore();
     var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
     
-    if(!(something===undefined)){alert("Mark as unvisited");
+    if(visited)){alert("Mark as unvisited");
         var l = c.indexOf(something) - 1;
         c.splice(l, l+1);
         docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(something)}).then(() => {
@@ -150,8 +150,8 @@ function makeCard(vendor, something) {
   var gray = "muted";
   var yes = "Visited!";
   var no = "Not Visited Yet";
-  var visited = something===undefined;
-  var card = "<div class='card'><img class='card-img-top' src='../images/vendors/"+vendor.image+"' alt='"+vendor.name+"'><div class='card-body'><h5 class='card-title'>"+vendor.name+"</h5><p class='card-text'>"+vendor.description+"</p><p class='text-"+(visited?green:gray)+"'>"+(visited?yes:no)+"</p></div><div class='card-footer'><div class='btn-group'><a href='https://www."+vendor.link+ "' target='_blank' class='btn btn-primary'>See more information</a><button onclick='toggle("+vendor.id+","+something+")' class='btn btn-primary text-white'>"+(visited?"Unmark":"Mark") + " As Visited</button></div></div></div>";
+  var visited = !(something===undefined);
+  var card = "<div class='card'><img class='card-img-top' src='../images/vendors/"+vendor.image+"' alt='"+vendor.name+"'><div class='card-body'><h5 class='card-title'>"+vendor.name+"</h5><p class='card-text'>"+vendor.description+"</p><p class='text-"+(visited?green:gray)+"'>"+(visited?yes:no)+"</p></div><div class='card-footer'><div class='btn-group'><a href='https://www."+vendor.link+ "' target='_blank' class='btn btn-primary'>See more information</a><button onclick='toggle("+vendor.id+",'"+something+"',"+visited+")' class='btn btn-primary text-white'>"+(visited?"Unmark":"Mark") + " As Visited</button></div></div></div>";
   return card;
 }
 
