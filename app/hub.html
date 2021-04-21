@@ -91,7 +91,10 @@
         document.getElementById("greeting").innerHTML = "Hi "+user.displayName.split(" ")[0];
       }
     });
-    document.getElementById('content').outerHTML = getCards();
+    (async () => {
+	  document.getElementById('content').outerHTML = getCards();
+	})()
+    
     
   </script>
 
