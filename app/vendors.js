@@ -94,7 +94,7 @@ function toggle(id, something, visited){alert(id);
     var docRef = db.collection("users").doc(user.uid.toString());
     
     if(visited){alert("Mark as unvisited");
-        var l = c.indexOf(something) - 1;
+        var l = c.indexOf(something);
         c.splice(l, l+1);
         docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(something)}).then(() => {
             Cookies.set('placesVisited', c.join("|"), {path: '' });
