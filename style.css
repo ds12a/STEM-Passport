@@ -40,3 +40,6 @@
 .card-columns{
   display: inline-block;
 }
+body {
+  width: 80%;
+}
