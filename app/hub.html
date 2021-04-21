@@ -92,8 +92,10 @@
       }
     });
    
-	  document.getElementById('content').outerHTML = await getCards();
-
+	  
+	(async () => {
+		document.getElementById('content').outerHTML = await getCards();
+	})()
     
     
   </script>
