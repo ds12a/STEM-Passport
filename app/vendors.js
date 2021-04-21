@@ -88,7 +88,7 @@ function getTime(){
     return n;
 }
 function toggle(id, something){alert(id);
-    var c = Cookies.get('placesVisited').split('|').map(Number);
+    var c = Cookies.get('placesVisited').split('|');
     var db = firebase.firestore();
     var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
