@@ -154,7 +154,7 @@ function makeCard(vendor, something) {
   return card;
 }
 
-async function getCards() {
+async function getVisitedCards() {
   var s = "";
   var v = Cookies.get('placesVisited');
   if(!v) {
@@ -167,8 +167,30 @@ async function getCards() {
   alert(placesVisited);
   for (x of vendors) {
     y = placesVisited.find(a =>a.includes(x.id.toString()+"@"));
-    s += makeCard(x, y);
+    if(!(y===undefined)) s += makeCard(x, y);
     alert(x); alert(s);
   }
+  return s;
+}
+async function getUnvisitedCards() {
+  var s = "";
+  var v = Cookies.get('placesVisited');
+  if(!v) {
+    alert("Getting user data from database");
+    await getUserData();
+    v = Cookies.get('placesVisited');
+  }
+  alert(v);
+  var placesVisited = v.split("|");
+  alert(placesVisited);
+  for (x of vendors) {
+    y = placesVisited.find(a =>a.includes(x.id.toString()+"@"));
+    if((y===undefined)) s += makeCard(x, y);
+    alert(x); alert(s);
+  }
+  return s;
+}
+async function getCards() {
+  s = (await getUnvisitedCards())+(await getVisitedCards());
   return s;
 }
