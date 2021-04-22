@@ -116,13 +116,13 @@
 	  
 	(async () => {
 		document.getElementById('content-all').outerHTML = await getCards();
-	})()
+	})();
 	(async () => {
 		document.getElementById('content-visited').outerHTML = await getVisitedCards();
-	})()
+	})();
 	(async () => {
 		document.getElementById('content-unvisited').outerHTML = await getUnvisitedCards();
-	})()
+	})();
     
     
   </script>
