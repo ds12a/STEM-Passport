@@ -87,13 +87,13 @@ function getTime(){
     var n = d.toLocaleDateString();
     return n;
 }
-function toggle(id, something, visited){alert(id);
+function toggle(id, something, visited){console.log(id);
     var c = Cookies.get('placesVisited').split('|');
     var db = firebase.firestore();
     var user = firebase.auth().currentUser;
     var docRef = db.collection("users").doc(user.uid.toString());
     
-    if(visited){alert("Mark as unvisited");
+    if(visited){console.log("Mark as unvisited");
         var l = c.indexOf(something);
         c.splice(l, l+1);
         docRef.update({visited: firebase.firestore.FieldValue.arrayRemove(something)}).then(() => {
@@ -101,7 +101,7 @@ function toggle(id, something, visited){alert(id);
             console.log("Document successfully updated!");
             location.reload(false);
         });
-    } else {alert('Mark as visited');
+    } else {console.log('Mark as visited');
         label = id.toString()+"@"+getTime();
         c.push(label);
         docRef.update({visited: firebase.firestore.FieldValue.arrayUnion(label)}).then(() => {
@@ -128,7 +128,7 @@ async function getUserData(){
             console.log("No such document!");
             docRef.set({visited:[0]});
             Cookies.set('placesVisited', "|", {path: '' });
-            alert("User Data Generated");
+            console.log("User Data Generated");
         }
          location.reload(); 
       }).catch((error) => {
@@ -156,13 +156,13 @@ async function getVisitedCards() {
   var s = "";
   var v = Cookies.get('placesVisited');
   if(!v) {
-    alert("Getting user data from database");
+    console.log("Getting user data from database");
     await getUserData();
     v = Cookies.get('placesVisited');
   }
-  alert(v);
+  console.log(v);
   var placesVisited = v.split("|");
-  alert(placesVisited);
+  console.log(placesVisited);
   for (x of vendors) {
     y = placesVisited.find(a =>a.includes(x.id.toString()+"@"));
     if(!(y===undefined)) s += makeCard(x, y);
@@ -173,13 +173,13 @@ async function getUnvisitedCards() {
   var s = "";
   var v = Cookies.get('placesVisited');
   if(!v) {
-    alert("Getting user data from database");
+    console.log("Getting user data from database");
     await getUserData();
     v = Cookies.get('placesVisited');
   }
-  alert(v);
+  console.log(v);
   var placesVisited = v.split("|");
-  alert(placesVisited);
+  console.log(placesVisited);
   for (x of vendors) {
     y = placesVisited.find(a =>a.includes(x.id.toString()+"@"));
     if((y===undefined)) s += makeCard(x, y);
