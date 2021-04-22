@@ -2,6 +2,6 @@
 STEM Passport Project for KRESA
 
 # **_Now Abandoned!_**
-# ~~To Do:
-- Fix Sorting 
-- ~~Cleanup
+# ~~To Do:~~
+- ~~Fix Sorting ~~
+- ~~Cleanup~~
