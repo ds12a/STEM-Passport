@@ -125,7 +125,6 @@ async function getUserData(){
             Cookies.set('placesVisited', data.visited.join("|"), {path: '' });
         } else {
             // doc.data() will be undefined in this case
-            alert("User Data not found!");
             console.log("No such document!");
             docRef.set({visited:[0]});
             Cookies.set('placesVisited', "|", {path: '' });
@@ -133,7 +132,6 @@ async function getUserData(){
         }
          location.reload(); 
       }).catch((error) => {
-          alert("An error occured.");
           console.log("Error getting document:", error);
       });
     } else {
@@ -168,7 +166,6 @@ async function getVisitedCards() {
   for (x of vendors) {
     y = placesVisited.find(a =>a.includes(x.id.toString()+"@"));
     if(!(y===undefined)) s += makeCard(x, y);
-    alert(x); alert(s);
   }
   return s;
 }
@@ -186,7 +183,6 @@ async function getUnvisitedCards() {
   for (x of vendors) {
     y = placesVisited.find(a =>a.includes(x.id.toString()+"@"));
     if((y===undefined)) s += makeCard(x, y);
-    alert(x); alert(s);
   }
   return s;
 }
