@@ -191,6 +191,6 @@ async function getUnvisitedCards() {
   return s;
 }
 async function getCards() {
-  s = (await getUnvisitedCards())+(await getVisitedCards());
+  s = (await getVisitedCards())+(await getUnvisitedCards());
   return s;
 }
