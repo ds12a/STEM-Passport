@@ -2,4 +2,4 @@
 STEM Passport Project for KRESA
 # To Do:
 - Fix Sorting 
-- - Cleanup
+- Cleanup
